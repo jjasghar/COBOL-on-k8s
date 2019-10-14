@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: watcher-out
+  labels:
+    app: watcher-out
+spec:
+  selector:
+    matchLabels:
+      app: watcher-out
+  template:
+    metadata:
+      labels:
+        app: watcher-out
+    spec:
+      containers:
+      - image: jjasghar/watcher-out:v1.1
+        name: watcher-in
+        volumeMounts:
+        - name: k8s-cobol
+          mountPath: /mnt/
+
+      volumes:
+      - name: k8s-cobol
+        persistentVolumeClaim:
+          claimName: k8s-cobol

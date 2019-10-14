@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: k8s-cobol
+  labels:
+    billingType: "monthly"
+    region: us-south
+    zone: dal10
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 24Gi
+  storageClassName: ibmc-file-silver
