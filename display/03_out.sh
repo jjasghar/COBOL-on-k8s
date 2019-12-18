@@ -1,8 +1,10 @@
 #!/bin/bash
 
-ibmcloud ks cluster config --cluster bnimkjfd093mlbf6d960
+source ../local.env
 
-export KUBECONFIG=/home/jjasghar/.bluemix/plugins/container-service/clusters/bnimkjfd093mlbf6d960/kube-config-dal10-k8s.asgharlabs.io.yml
+KUBECONFIG=""
+
+eval $(ibmcloud ks cluster config $CLUSTER_NAME | grep export)
 
 WATCHER=$(kubectl get pods | grep 'watcher-out' | awk {'print $1'})
 
