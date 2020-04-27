@@ -1,4 +1,4 @@
-FROM centos:7
+FROM centos:7 as BUILD
 
 ENV GMP_VERSION=6.0.0
 ENV GNU_COBOL=1.1
@@ -16,11 +16,22 @@ RUN cd /src && wget http://sourceforge.net/projects/open-cobol/files/gnu-cobol/$
     tar xvzf gnu-cobol-${GNU_COBOL}.tar.gz && \
     cd gnu-cobol-${GNU_COBOL} && ./configure ; make ; make check ; make install
 
-COPY ./plus5numbers.cbl /src/cobol/
-COPY ./watcher-cobol.sh /src/
+COPY  ./plus5numbers.cbl /src/cobol/
 
 RUN cd /src/cobol && cobc -free -x -o plus5numbers-exe plus5numbers.cbl
 
+FROM centos:7
+
+RUN yum install -y wget procps-ng
+
+RUN wget -O /tmp/libcob.rpm http://packages.psychotic.ninja/7/base/x86_64/RPMS/libcob-1.1-5.el7.psychotic.x86_64.rpm && \
+    rpm -Uvh /tmp/libcob.rpm
+
+COPY --from=BUILD /src/cobol/plus5numbers-exe /app/plus5numbers-exe
+COPY ./scripts/* /app/
+
+RUN chmod +x /app/*.sh
+
 ENV LD_LIBRARY_PATH /usr/local/lib:$LD_LIBRARY_PATH
 
-CMD ["/src/watcher-cobol.sh"]
+CMD ["/app/watcher-cobol.sh"]

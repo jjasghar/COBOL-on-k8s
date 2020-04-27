@@ -1,9 +1,12 @@
 #!/bin/bash
 
+[[ -n ${DEBUG} ]] && set -eox
+
 NUMBERS_OUT_LOCATION=/mnt/cobol/out
 FILENAME=newNumbers.txt
 
 while true; do
+  test $? -gt 128 && break
   if test -f "${NUMBERS_OUT_LOCATION}/${FILENAME}"; then
     echo -e "#"
     echo -e "#"

@@ -1,3 +1,6 @@
+# if you use this PVC
+# switch out the emptyDir in deployment.yaml
+
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -8,7 +11,7 @@ metadata:
     zone: dal10
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 24Gi
