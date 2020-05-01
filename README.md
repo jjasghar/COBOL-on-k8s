@@ -1,4 +1,6 @@
-# COBOL on k8s
+# KOBOLD - Kubernetes cOBOL Demo
+
+> Kobolds (pronounced "KOH-bawld")[4] are a race of diminutive, rat-like subterranean humanoids who dwell in and around caverns and mines throughout the Eastern Kingdoms, Kalimdor and the Broken Isles. They are not particularly intelligent and are notoriously cowardly, preferring to keep their distance from other, larger races. Kobolds are famous for being obsessively protective of the candles they wear upon their heads and which help them light their way through the dark tunnels they call home. - [https://wow.gamepedia.com/Kobold](https://wow.gamepedia.com/Kobold)
 
 ## Scope
 
