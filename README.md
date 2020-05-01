@@ -53,50 +53,47 @@ Example of using `s3fs` to mount the local directory.
 s3fs asgharlabs-in s3/ -o url=https://s3.sjc04.cloud-object-storage.appdomain.cloud -o passwd_file=key.key
 ```
 
-### Steps to Run the Demo
+### Steps to Run the Pre Bulit Demo
 
-Assuming you have built and deployed the containers to something like Docker Hub, you can to the following
-steps to get just run the demo.
+Assuming you have built and deployed the containers to something like Docker Hub, you can to the following steps to get just run the demo.
 
 - Go into the `k8s/` directory on the local machine
-- Run `01_setup.sh` to set up the kubernetes cluster, you should see something like the following:
-```console
-$ > ./01_setup.sh
-
-persistentvolumeclaim/k8s-cobol created
-.........................deployment.apps/workhorse created
-deployment.apps/watcher-in created
-deployment.apps/watcher-out created
-deployment.apps/cobol-process created
-```
+- Run `kubectl apply -f deployment.yaml` to set up the kubernetes cluster, you should see something like the following:
 - When that is done, you will have your pods on the Kubernetes cluster.
 ```console
 $ > kubectl get pods
-NAME                             READY   STATUS    RESTARTS   AGE
-cobol-process-7f668fcb59-4lhtz   1/1     Running   0          79s
-watcher-in-579779fd7d-ss74q      1/1     Running   0          80s
-watcher-out-6fbfbd96f5-srtkv     1/1     Running   0          79s
-workhorse-64ff8944b-5ff9c        1/1     Running   0          86s
+NAME                             READY   STATUS     RESTARTS   AGE
+cobol-process-6f546948c8-pc99r   0/3     Init:0/1   0          8s
 ```
-- Open up 3 terminals and go to the `display/` directory, run one script in each, you should see
-the outputs of each step in the pipeline.
+then
+```console
+NAME                             READY   STATUS        RESTARTS   AGE
+cobol-process-7b57896fc7-qp7fb   3/3     Running       0          23s
+```
 - Copy a `numbers.txt` into the `s3/` directory, and in the `watcher-in` terminal you should see
 the `wget` and file move.
-- Look at the `cobol-process` terminal and you should see the output of the file and new file.
-- Finally look at the `watcher-out` container and you should see the new file outputed.
-- When you are done, run `99_cleanup.sh` and you should see something like:
+- Look at the `cobol-process` container and you should see the output of the file and new file.
+- Finally look at the `watcher-out` container and you should see the new file outputed. Something like the following:
 ```console
-$ > ./99_cleanup.sh
-deployment.extensions "cobol-process" deleted
-deployment.extensions "watcher-in" deleted
-deployment.extensions "watcher-out" deleted
-deployment.extensions "workhorse" deleted
-pod "cobol-process-7f668fcb59-4lhtz" deleted
-pod "watcher-in-579779fd7d-ss74q" deleted
-pod "watcher-out-6fbfbd96f5-srtkv" deleted
-pod "workhorse-64ff8944b-5ff9c" deleted
-service "kubernetes" deleted
-persistentvolumeclaim "k8s-cobol" deleted
+$ > kubectl logs cobol-process-7b57896fc7-qp7fb -c watcher-out
+Waiting on newNumbers.txt to appear...
+Waiting on newNumbers.txt to appear...
+#
+#
+These are the new numbers, you can ship this wherever you need...
+#
+#
+00028
+00012
+00049
+00057
+00017
+01342
+#
+#
+#
+#
+#
 ```
 
 ## Building the Docker image:
@@ -104,8 +101,7 @@ persistentvolumeclaim "k8s-cobol" deleted
 ```bash
 REPOSITORY=<your docker hub login>
 TAG=latest
-docker build -t $REPOSITORY/cobol-batch:$TAG .
-
+$ docker build -t $REPOSITORY/cobol-batch:$TAG .
 ```
 
 ## License & Authors

@@ -26,7 +26,7 @@ spec:
         persistentVolumeClaim:
           claimName: k8s-cobol
       containers:
-        - image: jjasghar/cobol-batch:v2.0
+        - image: jjasghar/cobol-batch:latest
           imagePullPolicy: Always
           name: cobol-process
           # env:
@@ -36,7 +36,7 @@ spec:
           - name: k8s-cobol
             mountPath: /mnt/
           command: ["/app/watcher-cobol.sh"]
-        - image: jjasghar/cobol-batch:v2.0
+        - image: jjasghar/cobol-batch:latest
           # env:
           #   - name: DEBUG
           #     value: hellyeah
@@ -45,7 +45,7 @@ spec:
           - name: k8s-cobol
             mountPath: /mnt/
           command: ["/app/watcher-in.sh"]
-        - image: jjjasghar/cobol-batch:v2.0
+        - image: jjasghar/cobol-batch:latest
           # env:
           #   - name: DEBUG
           #     value: hellyeah
