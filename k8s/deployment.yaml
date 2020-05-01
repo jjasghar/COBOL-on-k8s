@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cobol-process
+  labels:
+    app: cobol-process
+spec:
+  selector:
+    matchLabels:
+      app: cobol-process
+  template:
+    metadata:
+      labels:
+        app: cobol-process
+    spec:
+      initContainers:
+      - image: centos:7
+        name: init
+        volumeMounts:
+        - name: k8s-cobol
+          mountPath: /mnt/
+        command: ["bash"]
+        args: ["-c", "mkdir -p -v /mnt/cobol/{in,out}"]
+      volumes:
+      - name: k8s-cobol
+        persistentVolumeClaim:
+          claimName: k8s-cobol
+      containers:
+        - image: jjasghar/cobol-batch:v2.0
+          imagePullPolicy: Always
+          name: cobol-process
+          # env:
+          #   - name: DEBUG
+          #     value: hellyeah
+          volumeMounts:
+          - name: k8s-cobol
+            mountPath: /mnt/
+          command: ["/app/watcher-cobol.sh"]
+        - image: jjasghar/cobol-batch:v2.0
+          # env:
+          #   - name: DEBUG
+          #     value: hellyeah
+          name: watcher-in
+          volumeMounts:
+          - name: k8s-cobol
+            mountPath: /mnt/
+          command: ["/app/watcher-in.sh"]
+        - image: jjjasghar/cobol-batch:v2.0
+          # env:
+          #   - name: DEBUG
+          #     value: hellyeah
+          name: watcher-out
+          command: ["/app/watcher-out.sh"]
+          volumeMounts:
+          - name: k8s-cobol
+            mountPath: /mnt/
+
+      volumes:
+      - name: k8s-cobol
+        emptyDir: {}
+        # persistentVolumeClaim:
+        #   claimName: k8s-cobol

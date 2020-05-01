@@ -99,11 +99,21 @@ service "kubernetes" deleted
 persistentvolumeclaim "k8s-cobol" deleted
 ```
 
+## Building the Docker image:
+
+```bash
+REPOSITORY=<your docker hub login>
+TAG=latest
+docker build -t $REPOSITORY/cobol-batch:$TAG .
+
+```
+
 ## License & Authors
 
 If you would like to see the detailed LICENCE click [here](./LICENCE).
 
 - Author: JJ Asghar <awesome@ibm.com>
+- Contributor: Paul Czarkowski <username.taken@gmail.com>
 
 ```text
 Copyright:: 2019- IBM, Inc
