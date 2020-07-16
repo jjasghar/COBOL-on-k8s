@@ -4,6 +4,8 @@
 
 ## Scope
 
+**This is an NOT production ready, this is just a experiment**
+
 This repository shows off a simple [ETL pipeline](https://databricks.com/glossary/etl-pipeline) using
 COBOL and Kubernetes.
 
