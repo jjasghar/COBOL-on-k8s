@@ -14,7 +14,7 @@ jobs:
       - uses: mr-smithers-excellent/docker-build-push@v4
         name: Build & push Docker image
         with:
-          image: cobol-batch
+          image: jjasghar/cobol-batch
           tag: latest
           registry: ghcr.io
           dockerfile: Dockerfile
