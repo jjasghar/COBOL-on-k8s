@@ -13,7 +13,7 @@ There are two main portions to this repository. The [docker-containers](./docker
 configuration and repeatable builds of the different containers of the ETL pipeline. The [k8s](./k8s)
 directory has the `.yaml` files to deploy the said containers to a Kubernetes cluster on [IBM Cloud](https://cloud.ibm.com).
 
-The demo COBOL applicaiton is located [here](./plus5numbers.cbl). It is a simple COBOL application
+The demo COBOL application is located [here](./plus5numbers.cbl). It is a simple COBOL application
 that takes in a file called `numbers.txt` (an [example](./numbers.txt.example) here) and outputs a
 file called `newNumbers.txt` with every number rewritten 5 added to it. If you take a look at the
 diagram below you see the pipeline illustrated.
@@ -57,27 +57,32 @@ Example of using `s3fs` to mount the local directory.
 s3fs asgharlabs-in s3/ -o url=https://s3.sjc04.cloud-object-storage.appdomain.cloud -o passwd_file=key.key
 ```
 
-### Steps to Run the Pre Bulit Demo
+### Steps to Run the Pre Built Demo
 
 Assuming you have built and deployed the containers to something like Docker Hub, you can to the following steps to get just run the demo.
 
 - Go into the `k8s/` directory on the local machine
-- Run `kubectl apply -f deployment.yaml` to set up the kubernetes cluster, you should see something like the following:
+- Run `kubectl apply -f deployment.yaml` to set up the Kubernetes cluster, you should see something like the following:
 - When that is done, you will have your pods on the Kubernetes cluster.
+
 ```console
 $ > kubectl get pods
 NAME                             READY   STATUS     RESTARTS   AGE
 cobol-process-6f546948c8-pc99r   0/3     Init:0/1   0          8s
 ```
+
 then
+
 ```console
 NAME                             READY   STATUS        RESTARTS   AGE
 cobol-process-7b57896fc7-qp7fb   3/3     Running       0          23s
 ```
+
 - Copy a `numbers.txt` into the `s3/` directory, and in the `watcher-in` terminal you should see
 the `wget` and file move.
 - Look at the `cobol-process` container and you should see the output of the file and new file.
-- Finally look at the `watcher-out` container and you should see the new file outputed. Something like the following:
+- Finally look at the `watcher-out` container and you should see the new file outputted. Something like the following:
+
 ```console
 $ > kubectl logs cobol-process-7b57896fc7-qp7fb -c watcher-out
 Waiting on newNumbers.txt to appear...
@@ -110,7 +115,7 @@ $ docker build -t $REPOSITORY/cobol-batch:$TAG .
 
 ## License & Authors
 
-If you would like to see the detailed LICENCE click [here](./LICENCE).
+If you would like to see the detailed LICENSE click [here](./LICENSE).
 
 - Author: JJ Asghar <awesome@ibm.com>
 - Contributor: Paul Czarkowski <username.taken@gmail.com>
